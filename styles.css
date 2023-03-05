@@ -4,17 +4,24 @@
     box-sizing: border-box;
 }
 
+#container > h1 {
+    grid-column: 2 / 3;
+    padding-top: 20px;
+}
+
 #container {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template: auto 1fr / 1fr 10fr;
+    justify-items: center;
     align-items: center;
     height: 100vh;
-    width: 100vw;
+    width: 100%;
 }
 
 #gridContainer {
     width: 600px;
     height: 600px;
+    grid-column: 2 / 3;
     display: grid;
     grid-template: 200px 200px 200px / 200px 200px 200px;
 
@@ -27,4 +34,9 @@
 
 .gridCell, #gridContainer {
     border: 1px solid black;
+}
+
+#sidebar {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
 }

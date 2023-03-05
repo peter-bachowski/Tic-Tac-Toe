@@ -1,6 +1,5 @@
 const gridContainer = document.getElementById("gridContainer");
 const gridCell = document.createElement("div");
-gridCell.innerText = "hello";
 
 let cellArray = [];
 
