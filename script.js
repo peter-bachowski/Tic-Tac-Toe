@@ -23,6 +23,7 @@ let startPressed = false;
 let player1;
 let player2;
 let currentPlayer;
+let playerWin = false;
 
 
 //functions
@@ -48,8 +49,8 @@ function submit(event) {
 
   currentPlayer = player1.name;
 
-  player1ScoreContainer.innerText = player1Name.value;
-  player2ScoreContainer.innerText = player2Name.value;
+  player1ScoreContainer.innerText = player1Name.value + ": X";
+  player2ScoreContainer.innerText = player2Name.value + ": O";
 
   startPressed = true;
   lightbox.className = "off";
@@ -62,14 +63,18 @@ function playGame() {
   for (let i = 0; i < cellElements.length; i++) {
     cellElements[i].onclick = () => {
       if (currentPlayer === player1.name) {
-        cellElements[i].innerText = "X";
-        currentPlayer = player2.name;
-        playerHeader.innerText = currentPlayer + "'s Turn!";
+        if (cellElements[i].innerText === ""){
+          cellElements[i].innerText = "X";
+          currentPlayer = player2.name;
+          playerHeader.innerText = currentPlayer + "'s Turn!";  
+        }
       }
       else {
-        cellElements[i].innerText = "O";
-        currentPlayer = player1.name;
-        playerHeader.innerText = currentPlayer + "'s Turn!";
+        if (cellElements[i].innerText === "") {
+          cellElements[i].innerText = "O";
+          currentPlayer = player1.name;
+          playerHeader.innerText = currentPlayer + "'s Turn!";  
+        }
       }
     }
   }
