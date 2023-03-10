@@ -1,4 +1,6 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //global variables and factory functions(objects)
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const gridContainer = document.getElementById("gridContainer");
 const gridCell = document.createElement("div");
@@ -12,21 +14,24 @@ const playerHeader = document.getElementById("playerHeader");
 
 const player = (name, symbol) => { return { name, symbol }; };
 
-const CellObj = (cellCount) => {
+const CellObj = (cellCount, symbol) => {
   const cellId = "cell_" + cellCount;
   const cellElement = gridCell.cloneNode(true);
-  return { cellElement, cellId };
+  this.symbol = symbol;
+  return { cellElement, cellId, symbol };
 };
 
 let cellArray = [];
+let cellElements;
 let startPressed = false;
 let player1;
 let player2;
 let currentPlayer;
-let playerWin = false;
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //functions
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function createCells() { //creates the cells
   gridCell.classList.add("gridCell");
@@ -36,7 +41,9 @@ function createCells() { //creates the cells
     cellArray[cellCount] = newCell;
     gridContainer.appendChild(newCell.cellElement);
   }
+  cellElements = document.getElementsByClassName("gridCell");
 }
+
 
 function submit(event) {
   event.preventDefault();
@@ -58,22 +65,28 @@ function submit(event) {
   playerHeader.innerText = currentPlayer + "'s Turn!";
 }
 
+
 function playGame() {
-  const cellElements = document.getElementsByClassName("gridCell");
   for (let i = 0; i < cellElements.length; i++) {
     cellElements[i].onclick = () => {
-      if (currentPlayer === player1.name) {
-        if (cellElements[i].innerText === ""){
-          cellElements[i].innerText = "X";
-          currentPlayer = player2.name;
-          playerHeader.innerText = currentPlayer + "'s Turn!";  
+      if (startPressed === true) {
+        if (currentPlayer === player1.name) {
+          if (cellElements[i].innerText === "") {
+            cellElements[i].innerText = "X";
+            cellArray[i].symbol = "X"
+            currentPlayer = player2.name;
+            playerHeader.innerText = currentPlayer + "'s Turn!";
+            checkScores();
+          }
         }
-      }
-      else {
-        if (cellElements[i].innerText === "") {
-          cellElements[i].innerText = "O";
-          currentPlayer = player1.name;
-          playerHeader.innerText = currentPlayer + "'s Turn!";  
+        else {
+          if (cellElements[i].innerText === "") {
+            cellElements[i].innerText = "O";
+            cellArray[i].symbol = "O"
+            currentPlayer = player1.name;
+            playerHeader.innerText = currentPlayer + "'s Turn!";
+            checkScores();
+          }
         }
       }
     }
@@ -81,27 +94,75 @@ function playGame() {
 }
 
 
+function checkScores() {
+  if (
+    (cellArray[0].symbol === "X" && cellArray[1].symbol === "X" && cellArray[2].symbol === "X") ||
+    (cellArray[3].symbol === "X" && cellArray[4].symbol === "X" && cellArray[5].symbol === "X") ||
+    (cellArray[6].symbol === "X" && cellArray[7].symbol === "X" && cellArray[8].symbol === "X") ||
+    (cellArray[0].symbol === "X" && cellArray[3].symbol === "X" && cellArray[6].symbol === "X") ||
+    (cellArray[1].symbol === "X" && cellArray[4].symbol === "X" && cellArray[7].symbol === "X") ||
+    (cellArray[2].symbol === "X" && cellArray[5].symbol === "X" && cellArray[8].symbol === "X") ||
+    (cellArray[0].symbol === "X" && cellArray[4].symbol === "X" && cellArray[8].symbol === "X") ||
+    (cellArray[2].symbol === "X" && cellArray[4].symbol === "X" && cellArray[6].symbol === "X")
+  ) {
+    playerHeader.innerText = player1.name + " is the Winner!"
+    startPressed = false;
+  }
+
+  else if (
+    (cellArray[0].symbol === "O" && cellArray[1].symbol === "O" && cellArray[2].symbol === "O") ||
+    (cellArray[3].symbol === "O" && cellArray[4].symbol === "O" && cellArray[5].symbol === "O") ||
+    (cellArray[6].symbol === "O" && cellArray[7].symbol === "O" && cellArray[8].symbol === "O") ||
+    (cellArray[0].symbol === "O" && cellArray[3].symbol === "O" && cellArray[6].symbol === "O") ||
+    (cellArray[1].symbol === "O" && cellArray[4].symbol === "O" && cellArray[7].symbol === "O") ||
+    (cellArray[2].symbol === "O" && cellArray[5].symbol === "O" && cellArray[8].symbol === "O") ||
+    (cellArray[0].symbol === "O" && cellArray[4].symbol === "O" && cellArray[8].symbol === "O") ||
+    (cellArray[2].symbol === "O" && cellArray[4].symbol === "O" && cellArray[6].symbol === "O")
+  ) {
+    playerHeader.innerText = player2.name + " is the winner!";
+    startPressed = false;
+  }
+
+
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //onclick functions
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 startBtn.onclick = () => {
   lightbox.className = "on";
 }
 
 resetBtn.onclick = () => {
-  const cellElements = document.getElementsByClassName("gridCell");
   for (let i = 0; i < cellElements.length; i++) {
     cellElements[i].innerText = "";
   }
+  playerHeader.innerText = "";
+  for (let i = 0; i < cellArray.length; i++) {
+    cellArray[i].symbol = "";
+  }
+
+  player1ScoreContainer.innerText = "";
+  player2ScoreContainer.innerText = "";
+
   startPressed = false;
 }
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //listeners
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 submitBtn.addEventListener("click", submit);
 
 
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //program start
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 createCells();
 
