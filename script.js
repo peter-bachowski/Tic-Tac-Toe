@@ -12,7 +12,8 @@ const cancelBtn = document.getElementById("cancelBtn");
 
 const player1ScoreContainer = document.getElementById("player1ScoreContainer");
 const player2ScoreContainer = document.getElementById("player2ScoreContainer");
-const playerHeader = document.getElementById("playerHeader");
+const scoreHeader = document.getElementById("scoreHeader");
+const sidebarHeader = document.getElementById("sidebarHeader");
 
 const lightbox = document.getElementById("lightbox");
 const formContainer = document.getElementById("formContainer");
@@ -74,23 +75,26 @@ function submit(event) {
   startPressed = true;
   lightbox.className = "off";
 
-  playerHeader.innerText = currentPlayer + "'s Turn!";
+  sidebarHeader.innerText = currentPlayer + " goes first!";
 
   removePlayerInputsContainer();
 }
 
 
-function clear() {
+function reset() {
   for (let i = 0; i < cellElements.length; i++) {
     cellElements[i].innerText = "";
   }
-  playerHeader.innerText = "";
+  scoreHeader.innerText = "";
   for (let i = 0; i < cellArray.length; i++) {
     cellArray[i].symbol = "";
   }
 
   player1ScoreContainer.innerText = "";
   player2ScoreContainer.innerText = "";
+
+  option1.checked = false;
+  option2.checked = false;
 
   removePlayerInputsContainer();
 
@@ -107,7 +111,7 @@ function playOneVsOne() {
             cellElements[i].innerText = "X";
             cellArray[i].symbol = "X"
             currentPlayer = player2.name;
-            playerHeader.innerText = currentPlayer + "'s Turn!";
+            sidebarHeader.innerText = currentPlayer + "'s Turn!";
             checkScores();
           }
         }
@@ -116,7 +120,7 @@ function playOneVsOne() {
             cellElements[i].innerText = "O";
             cellArray[i].symbol = "O"
             currentPlayer = player1.name;
-            playerHeader.innerText = currentPlayer + "'s Turn!";
+            sidebarHeader.innerText = currentPlayer + "'s Turn!";
             checkScores();
           }
         }
@@ -137,7 +141,8 @@ function checkScores() { //checks if there is three in a row of whichever symbol
     (cellArray[0].symbol === "X" && cellArray[4].symbol === "X" && cellArray[8].symbol === "X") ||
     (cellArray[2].symbol === "X" && cellArray[4].symbol === "X" && cellArray[6].symbol === "X")
   ) {
-    playerHeader.innerText = player1.name + " is the Winner!"
+    sidebarHeader.innerText = player1.name + " is the Winner!"
+    scoreHeader.innerText = "Game Over!"
     startPressed = false;
   }
 
@@ -151,7 +156,9 @@ function checkScores() { //checks if there is three in a row of whichever symbol
     (cellArray[0].symbol === "O" && cellArray[4].symbol === "O" && cellArray[8].symbol === "O") ||
     (cellArray[2].symbol === "O" && cellArray[4].symbol === "O" && cellArray[6].symbol === "O")
   ) {
-    playerHeader.innerText = player2.name + " is the winner!";
+    sidebarHeader.innerText = player2.name + " is the winner!";
+    scoreHeader.innerText = "Game Over!";
+
     startPressed = false;
   }
 }
@@ -171,7 +178,7 @@ function removePlayerInputsContainer() {
 
 startBtn.onclick = () => {
   lightbox.className = "on";
-  clear();
+  reset();
 }
 
 cancelBtn.onclick = () => {
@@ -187,7 +194,7 @@ submitBtn.addEventListener("click", submit);
 
 option1.addEventListener("click", addPlayerInputsContainer);
 
-resetBtn.addEventListener("click", clear);
+resetBtn.addEventListener("click", reset);
 
 
 

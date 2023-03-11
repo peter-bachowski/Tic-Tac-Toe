@@ -19,11 +19,11 @@ body, html {
 
 #container {
     display: grid;
-    grid-template: auto 1fr / minmax(auto, 400px) auto;
+    grid-template: auto 1fr / minmax(auto, 300px) minmax(30%, 100%);
     justify-items: center;
     align-items: center;
     height: 100vh;
-    width: 100%;
+    width: 100vw;
 }
 
 #headerAndGrid {
@@ -34,19 +34,19 @@ body, html {
   height: 100%;
 }
 
-#playerHeader {
+#scoreHeader {
   padding: 30px;
   font-weight: 700;
   font-size: 30px;
 }
 
 #gridContainer {
-    width: 600px;
-    height: 600px;
+    width: 90%;
+    height: 100%;
     grid-column: 2 / 3;
     display: grid;
-    grid-template: 200px 200px 200px / 200px 200px 200px;
-    margin: 50px;
+    grid-template: 1fr 1fr 1fr / 1fr 1fr 1fr;
+    margin: 20px;
 }
 
 .gridCell {
@@ -81,8 +81,8 @@ body, html {
 }
 
 #buttonsContainer > button {
-    width: 200px;
-    height: 100px;
+    width: 100px;
+    height: 50px;
 }
 
 #sidebar > * {
