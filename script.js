@@ -59,8 +59,6 @@ function createCells() { //creates the cells
 function submit(event) {
   event.preventDefault();
 
-  playOneVsOne();
-
   let player1Name = document.getElementById("player1Name");
   let player2Name = document.getElementById("player2Name");
 
@@ -78,6 +76,8 @@ function submit(event) {
   sidebarHeader.innerText = currentPlayer + " goes first!";
 
   removePlayerInputsContainer();
+
+  playOneVsOne();
 }
 
 
@@ -193,9 +193,9 @@ cancelBtn.onclick = () => {
 submitBtn.addEventListener("click", submit);
 
 option1.addEventListener("click", addPlayerInputsContainer);
+option2.addEventListener("click", removePlayerInputsContainer);
 
 resetBtn.addEventListener("click", reset);
-
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -19,7 +19,7 @@ body, html {
 
 #container {
     display: grid;
-    grid-template: auto 1fr / minmax(auto, 300px) minmax(30%, 100%);
+    grid-template: auto 1fr / minmax(auto, 30%) minmax(40%, 100%);
     justify-items: center;
     align-items: center;
     height: 100vh;
@@ -41,7 +41,8 @@ body, html {
 }
 
 #gridContainer {
-    width: 90%;
+    min-width: auto;
+    width: 70%;
     height: 100%;
     grid-column: 2 / 3;
     display: grid;
@@ -135,6 +136,7 @@ body, html {
     border: 8px solid black;
     width: 50%;
     height: 50%;
+    padding: 5px;
 }
 
 #playerInputsContainer {
