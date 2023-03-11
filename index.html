@@ -36,13 +36,24 @@
   <!--   LIGHTBOX   -->
   <div id="lightbox">
     <form id="formContainer">
-      <label for="player1Name" class="playerLabel">Player 1 Name: </label>
-      <input type="text" id="player1Name" required>
-      <label for="player2Name" class="playerLabel">Player 2 Name: </label>
-      <input type="text" id="player2Name" required>
-      <input type="submit" id="submit">
+      <label for="askWhatType" id="askWhatType"><u>Game Type</u></label>
+      <div id="optionsContainer">
+        <label for="oneVsOne">1 vs 1: </label>
+        <input type="radio" id="oneVsOne" name="gameOptions" value="oneVsOne">
+        <label for="vsAI">Vs AI: </label>
+        <input type="radio" id="vsAI" name="gameOptions" value="vsAI">
+      </div>
+      <div id="playerInputsContainer">
+        <label for="player1Name" class="playerLabel">Player 1 Name: </label>
+        <input type="text" id="player1Name" required>
+        <label for="player2Name" class="playerLabel">Player 2 Name: </label>
+        <input type="text" id="player2Name" required>
+        <input type="submit" id="submit">
+        <button id="cancelBtn">Cancel</button>
+      </div>
     </form>
   </div>
+
 </body>
 
 </html>

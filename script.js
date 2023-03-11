@@ -4,13 +4,22 @@
 
 const gridContainer = document.getElementById("gridContainer");
 const gridCell = document.createElement("div");
+
 const startBtn = document.getElementById("startBtn");
-const lightbox = document.getElementById("lightbox");
 const submitBtn = document.getElementById("submit");
 const resetBtn = document.getElementById("resetBtn");
+const cancelBtn = document.getElementById("cancelBtn");
+
 const player1ScoreContainer = document.getElementById("player1ScoreContainer");
 const player2ScoreContainer = document.getElementById("player2ScoreContainer");
 const playerHeader = document.getElementById("playerHeader");
+
+const lightbox = document.getElementById("lightbox");
+const formContainer = document.getElementById("formContainer");
+
+const playerInputsContainer = document.getElementById("playerInputsContainer");
+const option1 = document.getElementById("oneVsOne");
+const option2 = document.getElementById("vsAI");
 
 const player = (name, symbol) => { return { name, symbol }; };
 
@@ -34,6 +43,7 @@ let currentPlayer;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function createCells() { //creates the cells
+  removePlayerInputsContainer();
   gridCell.classList.add("gridCell");
   for (let cellCount = 0; cellCount < 9; cellCount++) {
     const newCell = CellObj(cellCount);
@@ -47,6 +57,8 @@ function createCells() { //creates the cells
 
 function submit(event) {
   event.preventDefault();
+
+  playOneVsOne();
 
   let player1Name = document.getElementById("player1Name");
   let player2Name = document.getElementById("player2Name");
@@ -63,10 +75,30 @@ function submit(event) {
   lightbox.className = "off";
 
   playerHeader.innerText = currentPlayer + "'s Turn!";
+
+  removePlayerInputsContainer();
 }
 
 
-function playGame() {
+function clear() {
+  for (let i = 0; i < cellElements.length; i++) {
+    cellElements[i].innerText = "";
+  }
+  playerHeader.innerText = "";
+  for (let i = 0; i < cellArray.length; i++) {
+    cellArray[i].symbol = "";
+  }
+
+  player1ScoreContainer.innerText = "";
+  player2ScoreContainer.innerText = "";
+
+  removePlayerInputsContainer();
+
+  startPressed = false;
+}
+
+
+function playOneVsOne() {
   for (let i = 0; i < cellElements.length; i++) {
     cellElements[i].onclick = () => {
       if (startPressed === true) {
@@ -94,7 +126,7 @@ function playGame() {
 }
 
 
-function checkScores() {
+function checkScores() { //checks if there is three in a row of whichever symbol anywhere
   if (
     (cellArray[0].symbol === "X" && cellArray[1].symbol === "X" && cellArray[2].symbol === "X") ||
     (cellArray[3].symbol === "X" && cellArray[4].symbol === "X" && cellArray[5].symbol === "X") ||
@@ -122,8 +154,14 @@ function checkScores() {
     playerHeader.innerText = player2.name + " is the winner!";
     startPressed = false;
   }
+}
 
+function addPlayerInputsContainer() {
+  formContainer.appendChild(playerInputsContainer);
+}
 
+function removePlayerInputsContainer() {
+  playerInputsContainer.remove();
 }
 
 
@@ -133,21 +171,11 @@ function checkScores() {
 
 startBtn.onclick = () => {
   lightbox.className = "on";
+  clear();
 }
 
-resetBtn.onclick = () => {
-  for (let i = 0; i < cellElements.length; i++) {
-    cellElements[i].innerText = "";
-  }
-  playerHeader.innerText = "";
-  for (let i = 0; i < cellArray.length; i++) {
-    cellArray[i].symbol = "";
-  }
-
-  player1ScoreContainer.innerText = "";
-  player2ScoreContainer.innerText = "";
-
-  startPressed = false;
+cancelBtn.onclick = () => {
+  lightbox.className = "off";
 }
 
 
@@ -157,14 +185,18 @@ resetBtn.onclick = () => {
 
 submitBtn.addEventListener("click", submit);
 
+option1.addEventListener("click", addPlayerInputsContainer);
+
+resetBtn.addEventListener("click", clear);
 
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //program start
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 createCells();
 
-playGame();
+
 
