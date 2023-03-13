@@ -2,6 +2,7 @@
 //global variables and factory functions(objects)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+const container = document.getElementById("container");
 const gridContainer = document.getElementById("gridContainer");
 const gridCell = document.createElement("div");
 
@@ -12,6 +13,7 @@ const resetBtn = document.getElementById("resetBtn");
 const cancelBtnOneVsOne = document.getElementById("cancelBtnOneVsOne");
 const cencelBtnVsAI = document.getElementById("cancelBtnVsAI");
 
+const sidebar = document.getElementById("sidebar");
 const player1ScoreContainer = document.getElementById("player1ScoreContainer");
 const player2ScoreContainer = document.getElementById("player2ScoreContainer");
 const scoreHeader = document.getElementById("scoreHeader");
@@ -90,7 +92,7 @@ function submitVsAI(event) {
 
   vsAiPressed = true;
 
-  player1 = player("player 1", "X"); 
+  player1 = player("player 1", "X");
   player2 = player("player 2", "O");
 
   currentPlayer = player1.name;
@@ -159,7 +161,7 @@ function playGame() {
       }
     }
   }
-  else if (vsAiPressed === true){
+  else if (vsAiPressed === true) {
     for (let i = 0; i < cellElements.length; i++) { //for every cell element add an onclick funtion
       cellElements[i].onclick = () => {
         if (startPressed === true) { //used so users can't press a cell unless start was pressed
@@ -180,7 +182,7 @@ function playGame() {
 
 function recurseAiChoice() {
   let randomCellNumber = Math.floor(Math.random() * 9);
-  if (cellElements[randomCellNumber].innerText === ""){
+  if (cellElements[randomCellNumber].innerText === "") {
     cellElements[randomCellNumber].innerText = "O";
     cellArray[randomCellNumber].symbol = "O";
   }
@@ -229,23 +231,43 @@ function checkScores() { //checks if there is three in a row of whichever symbol
   }
 }
 
-function addPlayerInputsContainer() {formContainer.appendChild(playerInputsContainer);}
+function addPlayerInputsContainer() { formContainer.appendChild(playerInputsContainer); }
 
-function addSubmitContainerAI() {formContainer.appendChild(submitContainerAI);}
+function addSubmitContainerAI() { formContainer.appendChild(submitContainerAI); }
 
-function removePlayerInputsContainer() {playerInputsContainer.remove();}
+function removePlayerInputsContainer() { playerInputsContainer.remove(); }
 
-function removeSubmitContainerAI() {submitContainerAI.remove();}
+function removeSubmitContainerAI() { submitContainerAI.remove(); }
 
 function removeBothOptions() {
   removePlayerInputsContainer();
   removeSubmitContainerAI();
 }
 
+function resize() {
+  if (document.body.clientWidth <= 1000) {
+    // sidebar.style.gridColumn = "1 / 3";
+    // sidebar.style.gridRow = "1 / 2";
+    container.style.display = "flex";
+    container.style.flexDirection = "column";
+    sidebar.style.height = "auto";
+    sidebar.style.justifyContent = "center";
+  }
+  else {
+    container.style.display = "inline-grid";
+    sidebar.style.height = "100%";
+  }
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //onclick functions
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+window.onload = () => {
+  resize();
+}
 
 startBtn.onclick = () => {
   lightbox.className = "on";
@@ -260,6 +282,10 @@ cancelBtnOneVsOne.onclick = () => {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //listeners
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+window.addEventListener("resize", () => {
+  resize();
+});
 
 submitBtnOneVsOne.addEventListener("click", submitOneVsOne);
 submitBtnVsAI.addEventListener("click", submitVsAI);
