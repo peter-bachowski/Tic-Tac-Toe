@@ -181,15 +181,17 @@ function playGame() {
 }
 
 function recurseAiChoice() {
-  let randomCellNumber = Math.floor(Math.random() * 9);
-  if (cellElements[randomCellNumber].innerText === "") {
-    cellElements[randomCellNumber].innerText = "O";
-    cellArray[randomCellNumber].symbol = "O";
+  if (startPressed === true) {
+    let randomCellNumber = Math.floor(Math.random() * 9);
+    if (cellElements[randomCellNumber].innerText === "") {
+      cellElements[randomCellNumber].innerText = "O";
+      cellArray[randomCellNumber].symbol = "O";
+    }
+    else {
+      recurseAiChoice();
+    }
+    checkScores();
   }
-  else {
-    recurseAiChoice();
-  }
-  checkScores();
 }
 
 function isTie() {
