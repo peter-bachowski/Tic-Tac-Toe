@@ -147,7 +147,7 @@ function playGame() {
               currentPlayer = player2.name;
               sidebarHeader.innerText = currentPlayer + "'s Turn!";
               findBoardState();
-              isEndGame();
+              isEndGame(boardState);
             }
           }
           else {
@@ -157,7 +157,7 @@ function playGame() {
               currentPlayer = player1.name;
               sidebarHeader.innerText = currentPlayer + "'s Turn!";
               findBoardState();
-              isEndGame();
+              isEndGame(boardState);
             }
           }
         }
@@ -174,7 +174,7 @@ function playGame() {
               cellArray[i].symbol = "X"; //adds the X symbol to the ojbect
               sidebarHeader.innerText = currentPlayer + "'s Turn!";
               findBoardState();
-              if (isEndGame() === false) {
+              if (isEndGame(boardState) === false) {
                 recurseAiChoice()
               }
             }
@@ -192,22 +192,45 @@ function findBoardState() {
    }
 }
 
-function findBestMove() {
-
+function findBestMove(boardState, player) {
+  let bestMove = null;
+  let tempBoardState = [];
+  for (let i = 0; i < boardState.length; i ++) { //clones boardState to tempBoardState
+    tempBoardState.push(boardState[i]);
+  }
+  for (let cellNum = 0; cellNum < boardState.length; cellNum ++) {
+    if (boardState[cellNum] === "") {
+      if (player === player1) {
+        tempBoardState[cellNum] = "X";
+      }
+      else if (player === player2) {
+        tempBoardState[cellNum] = "O";
+      }
+      if (isEndGame(tempBoardState)) {
+        bestMove = cellNum;
+        return bestMove;
+      }
+      tempBoardState[cellNum] = "";
+    }
+  }
+  return Math.floor(Math.random() * 9);
 }
 
 function recurseAiChoice() {
   if (startPressed === true) {
-    let randomCellNumber = Math.floor(Math.random() * 9);
-    if (cellElements[randomCellNumber].innerText === "") {
-      cellElements[randomCellNumber].innerText = "O";
-      cellArray[randomCellNumber].symbol = "O";
+    let bestMove = findBestMove(boardState, player1);
+    // let randomCellNumber = Math.floor(Math.random() * 9);
+    if (cellElements[bestMove].innerText === "") {
+      // cellElements[randomCellNumber].innerText = "O";
+      // cellArray[randomCellNumber].symbol = "O";
+      cellElements[bestMove].innerText = "O";
+      cellArray[bestMove].symbol = "O";
     }
     else {
       recurseAiChoice();
     }
     findBoardState();
-    isEndGame();
+    isEndGame(boardState);
   }
 }
 
@@ -221,37 +244,36 @@ function isTie() {
 }
 
 
-
-function isEndGame() { //checks if there is three in a row of whichever symbol anywhere
+function isEndGame(board) { //checks if there is three in a row of whichever symbol anywhere
   if (
-    (cellArray[0].symbol === "X" && cellArray[1].symbol === "X" && cellArray[2].symbol === "X") ||
-    (cellArray[3].symbol === "X" && cellArray[4].symbol === "X" && cellArray[5].symbol === "X") ||
-    (cellArray[6].symbol === "X" && cellArray[7].symbol === "X" && cellArray[8].symbol === "X") ||
-    (cellArray[0].symbol === "X" && cellArray[3].symbol === "X" && cellArray[6].symbol === "X") ||
-    (cellArray[1].symbol === "X" && cellArray[4].symbol === "X" && cellArray[7].symbol === "X") ||
-    (cellArray[2].symbol === "X" && cellArray[5].symbol === "X" && cellArray[8].symbol === "X") ||
-    (cellArray[0].symbol === "X" && cellArray[4].symbol === "X" && cellArray[8].symbol === "X") ||
-    (cellArray[2].symbol === "X" && cellArray[4].symbol === "X" && cellArray[6].symbol === "X")
+    (board[0] === "X" && board[1] === "X" && board[2] === "X") ||
+    (board[3] === "X" && board[4] === "X" && board[5] === "X") ||
+    (board[6] === "X" && board[7] === "X" && board[8] === "X") ||
+    (board[0] === "X" && board[3] === "X" && board[6] === "X") ||
+    (board[1] === "X" && board[4] === "X" && board[7] === "X") ||
+    (board[2] === "X" && board[5] === "X" && board[8] === "X") ||
+    (board[0] === "X" && board[4] === "X" && board[8] === "X") ||
+    (board[2] === "X" && board[4] === "X" && board[6] === "X")
     ) {
-        sidebarHeader.innerText = player1.name + " is the winner!";
-        scoreHeader.innerText = "Game Over!";
-        startPressed = false;
+        // sidebarHeader.innerText = player1.name + " is the winner!";
+        // scoreHeader.innerText = "Game Over!";
+        // startPressed = false;
         return true;
     }
 
   else if (
-    (cellArray[0].symbol === "O" && cellArray[1].symbol === "O" && cellArray[2].symbol === "O") ||
-    (cellArray[3].symbol === "O" && cellArray[4].symbol === "O" && cellArray[5].symbol === "O") ||
-    (cellArray[6].symbol === "O" && cellArray[7].symbol === "O" && cellArray[8].symbol === "O") ||
-    (cellArray[0].symbol === "O" && cellArray[3].symbol === "O" && cellArray[6].symbol === "O") ||
-    (cellArray[1].symbol === "O" && cellArray[4].symbol === "O" && cellArray[7].symbol === "O") ||
-    (cellArray[2].symbol === "O" && cellArray[5].symbol === "O" && cellArray[8].symbol === "O") ||
-    (cellArray[0].symbol === "O" && cellArray[4].symbol === "O" && cellArray[8].symbol === "O") ||
-    (cellArray[2].symbol === "O" && cellArray[4].symbol === "O" && cellArray[6].symbol === "O")
+    (board[0] === "O" && board[1] === "O" && board[2] === "O") ||
+    (board[3] === "O" && board[4] === "O" && board[5] === "O") ||
+    (board[6] === "O" && board[7] === "O" && board[8] === "O") ||
+    (board[0] === "O" && board[3] === "O" && board[6] === "O") ||
+    (board[1] === "O" && board[4] === "O" && board[7] === "O") ||
+    (board[2] === "O" && board[5] === "O" && board[8] === "O") ||
+    (board[0] === "O" && board[4] === "O" && board[8] === "O") ||
+    (board[2] === "O" && board[4] === "O" && board[6] === "O")
   ) {
-      sidebarHeader.innerText = player2.name + " is the winner!";
-      scoreHeader.innerText = "Game Over!";
-      startPressed = false;
+      // sidebarHeader.innerText = player2.name + " is the winner!";
+      // scoreHeader.innerText = "Game Over!";
+      // startPressed = false;
       return true; 
     }
   else {
@@ -278,8 +300,6 @@ function removeBothOptions() {
 
 function resize() {
   if (document.body.clientWidth <= 1000) {
-    // sidebar.style.gridColumn = "1 / 3";
-    // sidebar.style.gridRow = "1 / 2";
     container.style.display = "flex";
     container.style.flexDirection = "column";
     sidebar.style.height = "auto";
@@ -293,11 +313,12 @@ function resize() {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//onclick functions
+//onclick or onload functions
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 window.onload = () => {
+  createCells();
   resize();
 }
 
@@ -333,14 +354,3 @@ option2.addEventListener("click", () => {
 });
 
 resetBtn.addEventListener("click", reset);
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//program start
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-createCells();
-
-
-
