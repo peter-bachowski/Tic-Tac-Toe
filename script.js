@@ -37,6 +37,7 @@ const CellObj = (cellCount, symbol) => {
 };
 
 let cellArray = [];
+let boardState = [];
 let cellElements;
 let startPressed = false;
 let player1;
@@ -145,7 +146,8 @@ function playGame() {
               cellArray[i].symbol = "X"; //adds the X symbol to the ojbect
               currentPlayer = player2.name;
               sidebarHeader.innerText = currentPlayer + "'s Turn!";
-              checkScores();
+              findBoardState();
+              isEndGame();
             }
           }
           else {
@@ -154,7 +156,8 @@ function playGame() {
               cellArray[i].symbol = "O"
               currentPlayer = player1.name;
               sidebarHeader.innerText = currentPlayer + "'s Turn!";
-              checkScores();
+              findBoardState();
+              isEndGame();
             }
           }
         }
@@ -170,14 +173,27 @@ function playGame() {
               cellElements[i].innerText = "X"; //adds the player 1 symbol to the cell
               cellArray[i].symbol = "X"; //adds the X symbol to the ojbect
               sidebarHeader.innerText = currentPlayer + "'s Turn!";
-              checkScores();
-              recurseAiChoice();
+              findBoardState();
+              if (isEndGame() === false) {
+                recurseAiChoice()
+              }
             }
           }
         }
       }
     }
   }
+}
+
+function findBoardState() {
+  boardState = [];
+   for (let i = 0; i < cellArray.length; i++) {
+    boardState.push(cellArray[i].symbol);
+   }
+}
+
+function findBestMove() {
+
 }
 
 function recurseAiChoice() {
@@ -190,15 +206,23 @@ function recurseAiChoice() {
     else {
       recurseAiChoice();
     }
-    checkScores();
+    findBoardState();
+    isEndGame();
   }
 }
 
 function isTie() {
-
+  for (let i = 0; i < boardState.length; i++) {
+    if (boardState[i] === "") {
+      return false;
+    }
+  }
+  return true;
 }
 
-function checkScores() { //checks if there is three in a row of whichever symbol anywhere
+
+
+function isEndGame() { //checks if there is three in a row of whichever symbol anywhere
   if (
     (cellArray[0].symbol === "X" && cellArray[1].symbol === "X" && cellArray[2].symbol === "X") ||
     (cellArray[3].symbol === "X" && cellArray[4].symbol === "X" && cellArray[5].symbol === "X") ||
@@ -208,12 +232,12 @@ function checkScores() { //checks if there is three in a row of whichever symbol
     (cellArray[2].symbol === "X" && cellArray[5].symbol === "X" && cellArray[8].symbol === "X") ||
     (cellArray[0].symbol === "X" && cellArray[4].symbol === "X" && cellArray[8].symbol === "X") ||
     (cellArray[2].symbol === "X" && cellArray[4].symbol === "X" && cellArray[6].symbol === "X")
-  ) {
-    sidebarHeader.innerText = player1.name + " is the Winner!"
-    scoreHeader.innerText = "Game Over!"
-    startPressed = false;
-    return true;
-  }
+    ) {
+        sidebarHeader.innerText = player1.name + " is the winner!";
+        scoreHeader.innerText = "Game Over!";
+        startPressed = false;
+        return true;
+    }
 
   else if (
     (cellArray[0].symbol === "O" && cellArray[1].symbol === "O" && cellArray[2].symbol === "O") ||
@@ -225,12 +249,18 @@ function checkScores() { //checks if there is three in a row of whichever symbol
     (cellArray[0].symbol === "O" && cellArray[4].symbol === "O" && cellArray[8].symbol === "O") ||
     (cellArray[2].symbol === "O" && cellArray[4].symbol === "O" && cellArray[6].symbol === "O")
   ) {
-    sidebarHeader.innerText = player2.name + " is the winner!";
-    scoreHeader.innerText = "Game Over!";
-
-    startPressed = false;
-    return true;
+      sidebarHeader.innerText = player2.name + " is the winner!";
+      scoreHeader.innerText = "Game Over!";
+      startPressed = false;
+      return true; 
+    }
+  else {
+    if (isTie()) {
+      scoreHeader.innerText = "It's a tie!";
+      return true;
+    }
   }
+  return false;
 }
 
 function addPlayerInputsContainer() { formContainer.appendChild(playerInputsContainer); }
