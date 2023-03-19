@@ -219,10 +219,7 @@ function findBestMove(boardState, player) {
 function recurseAiChoice() {
   if (startPressed === true) {
     let bestMove = findBestMove(boardState, player1);
-    // let randomCellNumber = Math.floor(Math.random() * 9);
     if (cellElements[bestMove].innerText === "") {
-      // cellElements[randomCellNumber].innerText = "O";
-      // cellArray[randomCellNumber].symbol = "O";
       cellElements[bestMove].innerText = "O";
       cellArray[bestMove].symbol = "O";
     }
@@ -255,9 +252,12 @@ function isEndGame(board) { //checks if there is three in a row of whichever sym
     (board[0] === "X" && board[4] === "X" && board[8] === "X") ||
     (board[2] === "X" && board[4] === "X" && board[6] === "X")
     ) {
-        // sidebarHeader.innerText = player1.name + " is the winner!";
-        // scoreHeader.innerText = "Game Over!";
-        // startPressed = false;
+        if (board === boardState) {
+          sidebarHeader.innerText = player1.name + " is the winner!";
+          scoreHeader.innerText = "Game Over!";
+          startPressed = false;
+        }
+
         return true;
     }
 
@@ -271,9 +271,11 @@ function isEndGame(board) { //checks if there is three in a row of whichever sym
     (board[0] === "O" && board[4] === "O" && board[8] === "O") ||
     (board[2] === "O" && board[4] === "O" && board[6] === "O")
   ) {
-      // sidebarHeader.innerText = player2.name + " is the winner!";
-      // scoreHeader.innerText = "Game Over!";
-      // startPressed = false;
+      if (board === boardState) {
+        sidebarHeader.innerText = player2.name + " is the winner!";
+        scoreHeader.innerText = "Game Over!";
+        startPressed = false;
+      }
       return true; 
     }
   else {
